@@ -8,7 +8,7 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 /**
  * 自定义基于长度域的解包器
  */
-public class Spilter extends LengthFieldBasedFrameDecoder {
+public class Spliter extends LengthFieldBasedFrameDecoder {
 
     /**
      * customize communication protocol
@@ -20,7 +20,7 @@ public class Spilter extends LengthFieldBasedFrameDecoder {
     private static final int LENGTH_FIELD_OFFSET = 7;
     private static final int LENGTH_FIELD_LENGTH = 4;
 
-    public Spilter() {
+    public Spliter() {
         super(Integer.MAX_VALUE, LENGTH_FIELD_OFFSET, LENGTH_FIELD_LENGTH);
     }
 

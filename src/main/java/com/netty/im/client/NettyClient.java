@@ -3,13 +3,11 @@ package com.netty.im.client;
 
 import com.netty.im.client.console.ConsoleCommandManager;
 import com.netty.im.client.console.LoginConsoleCommand;
-import com.netty.im.client.handler.CreateGroupResponseHandler;
-import com.netty.im.client.handler.LoginResponseHadler;
-import com.netty.im.client.handler.LogoutResponseHandler;
-import com.netty.im.client.handler.MessageResponseHandler;
+import com.netty.im.client.handler.*;
 import com.netty.im.codec.PacketDecode;
 import com.netty.im.codec.PacketEncode;
-import com.netty.im.codec.Spilter;
+import com.netty.im.codec.Spliter;
+import com.netty.im.handler.IMIdleStateHandler;
 import com.netty.im.util.SessionUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -41,13 +39,19 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new Spilter());
+                        ch.pipeline().addLast(new IMIdleStateHandler());
+                        ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecode());
                         ch.pipeline().addLast(new LoginResponseHadler());
-                        ch.pipeline().addLast(new LogoutResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
                         ch.pipeline().addLast(new CreateGroupResponseHandler());
+                        ch.pipeline().addLast(new JoinGroupResponseHandler());
+                        ch.pipeline().addLast(new QuitGroupResponseHandler());
+                        ch.pipeline().addLast(new ListGroupMembersResponseHandler());
+                        ch.pipeline().addLast(new LogoutResponseHandler());
                         ch.pipeline().addLast(new PacketEncode());
+                        // 心跳定时器
+                        ch.pipeline().addLast(new HeartBeatTimeHandler());
                     }
                 });
         connect(bootstrap, HOST, PORT, MAX_RETRY);

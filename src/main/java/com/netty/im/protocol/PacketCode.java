@@ -1,14 +1,8 @@
 package com.netty.im.protocol;
 
 import com.netty.im.protocol.command.Command;
-import com.netty.im.protocol.request.CreateGroupRequestPacket;
-import com.netty.im.protocol.request.LoginRequestPacket;
-import com.netty.im.protocol.request.LogoutRequestPacket;
-import com.netty.im.protocol.request.MessageRequestPacket;
-import com.netty.im.protocol.response.CreateGroupResponsePacket;
-import com.netty.im.protocol.response.LoginResponsePacket;
-import com.netty.im.protocol.response.LogoutResponsePacket;
-import com.netty.im.protocol.response.MessageResponsePacket;
+import com.netty.im.protocol.request.*;
+import com.netty.im.protocol.response.*;
 import com.netty.im.serialize.Serializer;
 import com.netty.im.serialize.impl.JSONSerialize;
 import io.netty.buffer.ByteBuf;
@@ -33,6 +27,14 @@ public class PacketCode {
         PACKET_TYPE_MAP.put(Command.LOGOUT_RESPONSE, LogoutResponsePacket.class);
         PACKET_TYPE_MAP.put(Command.CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
         PACKET_TYPE_MAP.put(Command.CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
+        PACKET_TYPE_MAP.put(Command.JOIN_GROUP_REQUEST, JoinGroupRequestPacket.class);
+        PACKET_TYPE_MAP.put(Command.JOIN_GROUP_RESPONSE, JoinGroupResponsePacket.class);
+        PACKET_TYPE_MAP.put(Command.QUIT_GROUP_REQUEST, QuitGroupRequestPacket.class);
+        PACKET_TYPE_MAP.put(Command.QUIT_GROUP_RESPONSE, QuitGroupResponsePacket.class);
+        PACKET_TYPE_MAP.put(Command.LIST_GROUP_MEMBERS_REQUEST, ListGroupMembersRequestPacket.class);
+        PACKET_TYPE_MAP.put(Command.LIST_GROUP_MEMBERS_RESPONSE, ListGroupMembersResponsePacket.class);
+        PACKET_TYPE_MAP.put(Command.GROUP_MESSAGE_REQUEST, GroupMessageRequestPacket.class);
+        PACKET_TYPE_MAP.put(Command.GROUP_MESSAGE_RESPONSE, GroupMessageResponsePacket.class);
 
         SERIALIZER_MAP = new HashMap<>();
         Serializer serializer = new JSONSerialize();

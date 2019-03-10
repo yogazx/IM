@@ -15,6 +15,10 @@ import java.util.UUID;
 
 public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<CreateGroupRequestPacket> {
 
+    public static final CreateGroupRequestHandler INSTANCE = new CreateGroupRequestHandler();
+
+    private CreateGroupRequestHandler() {}
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, CreateGroupRequestPacket msg) throws Exception {
         List<String> userIds = msg.getUserIds();

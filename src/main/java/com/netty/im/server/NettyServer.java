@@ -1,14 +1,15 @@
 package com.netty.im.server;
 
+import com.netty.im.codec.PacketCodeHandler;
 import com.netty.im.codec.PacketDecode;
 import com.netty.im.codec.PacketEncode;
-import com.netty.im.codec.Spilter;
+import com.netty.im.codec.Spliter;
+import com.netty.im.handler.IMIdleStateHandler;
 import com.netty.im.server.handler.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
@@ -30,14 +31,24 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new Spilter());
-                        ch.pipeline().addLast(new PacketDecode());
-                        ch.pipeline().addLast(new LoginRequestHandler());
-                        ch.pipeline().addLast(new AuthHandler());
-                        ch.pipeline().addLast(new MessageRequestHandler());
-                        ch.pipeline().addLast(new CreateGroupRequestHandler());
-                        ch.pipeline().addLast(new LogoutRequestHandler());
-                        ch.pipeline().addLast(new PacketEncode());
+                        // 添加服务端空闲检测
+                        ch.pipeline().addLast(new IMIdleStateHandler());
+                        ch.pipeline().addLast(new Spliter());
+//                        使用PacketCodeHandler替代PacketDecode和PacketEncode
+                        ch.pipeline().addLast(PacketCodeHandler.INSTANCE);
+                        ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        ch.pipeline().addLast(AuthHandler.INSTANCE);
+                        ch.pipeline().addLast(IMHandler.INSTANCE);
+//                        ch.pipeline().addLast(new PacketDecode());
+//                        ch.pipeline().addLast(new LoginRequestHandler());
+//                        ch.pipeline().addLast(new AuthHandler());
+//                        ch.pipeline().addLast(new MessageRequestHandler());
+//                        ch.pipeline().addLast(new CreateGroupRequestHandler());
+//                        ch.pipeline().addLast(new JoinGroupRequestHandler());
+//                        ch.pipeline().addLast(new QuitGroupRequestHandler());
+//                        ch.pipeline().addLast(new ListGroupMembersRequestHandler());
+//                        ch.pipeline().addLast(new LogoutRequestHandler());
+//                        ch.pipeline().addLast(new PacketEncode());
                     }
                 });
         bind(serverBootstrap, PORT);
