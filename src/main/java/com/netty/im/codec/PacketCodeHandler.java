@@ -15,7 +15,7 @@ import java.util.List;
  * @author You Jia Ge
  * Created Time 2019/3/9
  */
-@ChannelHandler.Sharable
+//@ChannelHandler.Sharable
 public class PacketCodeHandler extends MessageToMessageCodec<ByteBuf, Packet> {
 
     public static final PacketCodeHandler INSTANCE = new PacketCodeHandler();

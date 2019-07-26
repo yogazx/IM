@@ -4,6 +4,7 @@ package com.netty.im.client;
 import com.netty.im.client.console.ConsoleCommandManager;
 import com.netty.im.client.console.LoginConsoleCommand;
 import com.netty.im.client.handler.*;
+import com.netty.im.codec.PacketCodeHandler;
 import com.netty.im.codec.PacketDecode;
 import com.netty.im.codec.PacketEncode;
 import com.netty.im.codec.Spliter;
@@ -41,15 +42,16 @@ public class NettyClient {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline().addLast(new IMIdleStateHandler());
                         ch.pipeline().addLast(new Spliter());
-                        ch.pipeline().addLast(new PacketDecode());
-                        ch.pipeline().addLast(new LoginResponseHadler());
+//                        ch.pipeline().addLast(new PacketDecode());
+                        ch.pipeline().addLast(PacketCodeHandler.INSTANCE);
+                        ch.pipeline().addLast(new LoginResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
                         ch.pipeline().addLast(new CreateGroupResponseHandler());
                         ch.pipeline().addLast(new JoinGroupResponseHandler());
                         ch.pipeline().addLast(new QuitGroupResponseHandler());
                         ch.pipeline().addLast(new ListGroupMembersResponseHandler());
                         ch.pipeline().addLast(new LogoutResponseHandler());
-                        ch.pipeline().addLast(new PacketEncode());
+//                        ch.pipeline().addLast(new PacketEncode());
                         // 心跳定时器
                         ch.pipeline().addLast(new HeartBeatTimeHandler());
                     }

@@ -37,6 +37,7 @@ public class NettyServer {
 //                        使用PacketCodeHandler替代PacketDecode和PacketEncode
                         ch.pipeline().addLast(PacketCodeHandler.INSTANCE);
                         ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        ch.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
                         ch.pipeline().addLast(AuthHandler.INSTANCE);
                         ch.pipeline().addLast(IMHandler.INSTANCE);
 //                        ch.pipeline().addLast(new PacketDecode());
